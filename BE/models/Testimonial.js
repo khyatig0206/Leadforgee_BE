@@ -1,38 +1,14 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../configs/db');
+const mongoose = require('mongoose');
 
-const Testimonial = sequelize.define('Testimonial', {
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    position: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    company: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    content: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    },
-    rating: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: { min: 1, max: 5 }
-    },
-    imageUrl: {
-      type: DataTypes.STRING
-    },
-    active: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true
-    }
-  }, {
-  tableName: 'testimonials',
-}
-);
+const testimonialSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  position: { type: String, required: true },
+  company: { type: String, required: true },
+  content: { type: String, required: true },
+  rating: { type: Number, required: true, min: 1, max: 5 },
+  imageUrl: { type: String },
+  cloudinaryId: { type: String }, // <-- new field
+  active: { type: Boolean, default: true }
+}, { timestamps: true });
 
-module.exports = Testimonial
+module.exports = mongoose.model('Testimonial', testimonialSchema);
